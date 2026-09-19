@@ -1,5 +1,17 @@
 # Changelog
 
+- Make a selected water-quality site readable: a backed, left-aligned table with
+  one row per analyte, concentrations aligned in a fixed-width column, standard
+  short forms for portal names too wide to fit, normalized litre and micro
+  symbols, and non-detects collapsed into a single count so detections lead.
+
+- Add a keyless Water Quality layer: viewport-bounded monitoring sites from the
+  Water Quality Portal with per-site measurements loaded on selection, five
+  analyte families, and a `/api/water-quality` proxy that caps responses, snaps
+  and caches by viewport, coalesces in-flight requests and serves stale data on
+  upstream failure. Sample age is reported separately from feed freshness, and
+  the PFAS family states that ultrashort-chain C2/C3 analytes are not monitored.
+
 - Distinguish PARTIAL vessel snapshots from STALE data in the layer panel, with
   accepted-record counts and unchanged retention, freshness and outage safeguards.
 
