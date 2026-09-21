@@ -15,5 +15,16 @@ export function createState() {
     lastUpdate: null,
     failureReason: null,
     abort: null,
+    /**
+     * Click-to-read state. The readout lives on its own data source so
+     * clearing a reading never disturbs the imagery overlay, and its abort
+     * controller is separate so a new click supersedes only the previous
+     * sample, not the composite resolution.
+     */
+    sampleDataSource: null,
+    sample: null,
+    sampling: false,
+    sampleAbort: null,
+    clickHandler: null,
   };
 }

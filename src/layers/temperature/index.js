@@ -3,14 +3,18 @@ import { createRendering } from './rendering.js';
 import { createIngestion } from './ingestion.js';
 import { createControls } from './controls.js';
 import { createLifecycle } from './lifecycle.js';
+import { createSampling } from './sampling.js';
 
 /** Construct the surface-temperature overlay with a supplied composite source. */
 export function createTemperatureLayer({ services, source }) {
   if (typeof source?.resolveDate !== 'function')
     throw new TypeError('A temperature composite source is required');
+  if (typeof source?.sample !== 'function')
+    throw new TypeError('A temperature point sampler is required');
   const state = createState();
   const parts = {};
   const context = { state, services, parts, source };
+  parts.sampling = createSampling(context);
   parts.rendering = createRendering(context);
   parts.ingestion = createIngestion(context);
   parts.controls = createControls(context);
@@ -23,3 +27,4 @@ export function createTemperatureLayer({ services, source }) {
   );
 }
 export { createTemperatureSource } from './source.js';
+export { createTemperatureSampler } from './sampler.js';

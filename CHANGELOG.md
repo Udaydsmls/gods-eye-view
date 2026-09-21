@@ -1,5 +1,11 @@
 # Changelog
 
+- Read the surface temperature at a clicked point. The click samples the
+  published tile pixel and inverts NASA's own colour map, so the readout is the
+  product's value range rather than an estimate, with the quantisation, pixel
+  size and composite age stated. Cloud, water and unretrieved pixels report no
+  value instead of a temperature.
+
 - Add a keyless Surface Temperature heat-map overlay from NASA GIBS, using the
   MODIS Terra 8-day land-surface-temperature composite with an opacity control.
   The layer resolves the newest published composite period before attaching, so

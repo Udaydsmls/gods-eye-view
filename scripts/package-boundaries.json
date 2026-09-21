@@ -933,7 +933,12 @@
       "src/layers/temperature/source.js",
       "src/layers/temperature/state.js",
       "src/maps/imagery.js",
-      "src/layers/temperature/scale.js"
+      "src/layers/temperature/scale.js",
+      "src/layers/temperature/colormap.js",
+      "src/layers/temperature/sampler.js",
+      "src/layers/temperature/sampling.js",
+      "src/layers/temperature/tiles.js",
+      "src/data/inputOwnership.js"
     ],
     "external": ["cesium"]
   },
@@ -1838,7 +1843,11 @@
       "src/layers/temperature/source.js",
       "src/layers/temperature/state.js",
       "src/layers/temperature/probe.js",
-      "src/layers/temperature/scale.js"
+      "src/layers/temperature/scale.js",
+      "src/layers/temperature/colormap.js",
+      "src/layers/temperature/sampler.js",
+      "src/layers/temperature/sampling.js",
+      "src/layers/temperature/tiles.js"
     ],
     "external": [
       "@mapbox/vector-tile",
@@ -2245,7 +2254,11 @@
       "src/layers/temperature/state.js",
       "src/maps/imagery.js",
       "src/layers/temperature/probe.js",
-      "src/layers/temperature/scale.js"
+      "src/layers/temperature/scale.js",
+      "src/layers/temperature/colormap.js",
+      "src/layers/temperature/sampler.js",
+      "src/layers/temperature/sampling.js",
+      "src/layers/temperature/tiles.js"
     ],
     "external": [
       "cesium",

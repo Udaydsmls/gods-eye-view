@@ -39,7 +39,7 @@ const SOURCE_METHODS = Object.freeze({
   ],
   bikeshare: ['getStations'],
   installations: ['getMappedSites', 'searchNearby'],
-  temperature: ['resolveDate'],
+  temperature: ['resolveDate', 'sample'],
   satellites: ['readGroup'],
   launches: ['getLaunches', 'getActiveTle'],
   alpr: ['fetch'],

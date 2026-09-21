@@ -170,6 +170,13 @@ Three properties are surfaced in the app rather than left to the reader:
 - **The colour ramp is NASA's, baked into the tiles.** The client does not map
   values to colours, so the scale is the published one rather than one invented
   here.
+- **Click-to-read inverts that same published ramp.** Clicking a point reads the
+  pixel from the tile and looks its colour up in NASA's colour map document
+  (`colormaps/v1.0/MODIS_Land_Surface_Temp.xml`, `units="K"`, 252 stops), so the
+  reading is the product's own value range, not an estimate. It is reported as a
+  range because the product quantises into 0.6 K buckets, and the map's
+  catch-all end stops are reported as bounds rather than as ranges starting at
+  0.02 K.
 
 ### Natural Earth physical regions (`natural_earth/`)
 

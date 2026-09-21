@@ -1,5 +1,17 @@
 # God's Eye View Current State
 
+Clicking the globe with Surface Temperature on reads that point's value. The
+sample comes from the published tile pixel, not the rendered canvas: the canvas
+carries the overlay at the operator's opacity over a basemap under lighting and
+a post-process shader, so reading it would measure the screenshot. The pixel's
+colour is looked up in NASA's colour map document, which makes the reading the
+product's own quantised range rather than an estimate; the map's catch-all end
+stops are reported as bounds. A transparent pixel is cloud, water or unretrieved
+and reports no value rather than a temperature. The readout states the quantity,
+the pixel's ground size and the composite it came from, lives on its own data
+source so clearing it never disturbs the overlay, and is dropped when a new
+composite attaches. The click yields to the shared pointer lease.
+
 Surface Temperature is a keyless NASA GIBS imagery overlay rather than a vector
 layer: its renderer owns a Cesium ImageryLayer added above the basemap, so a map
 stack switch leaves it in place, and it exposes an opacity control instead of

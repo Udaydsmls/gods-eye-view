@@ -53,3 +53,18 @@ export const MAX_ALPHA = 1;
  */
 export const COVERAGE_NOTE =
   '8-day clear-sky land average; cloud-persistent areas and water carry no value';
+
+/**
+ * NASA's published colour map for this product, the document the layer's WMTS
+ * capabilities entry points at. Note the name is the product family, not the
+ * layer id. Fetched at first sample and parsed once; it is what makes a pixel
+ * readable as a temperature rather than a guess.
+ */
+export const COLORMAP_URL =
+  'https://gibs.earthdata.nasa.gov/colormaps/v1.0/MODIS_Land_Surface_Temp.xml';
+
+/** Sampled tiles held in memory; a run of clicks in one area reuses one tile. */
+export const SAMPLE_TILE_CACHE_MAX = 12;
+
+/** Marker for the sampled point, distinct from the overlay it reads. */
+export const SAMPLE_MARKER_COLOR = '#ffffff';

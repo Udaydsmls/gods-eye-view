@@ -33,6 +33,9 @@ export function createRendering({ state: layerState, services, parts }) {
       layerState.viewer.imageryLayers.addImageryProvider(provider);
     layerState.imageryLayer.alpha = layerState.alpha;
     layerState.date = date;
+    // A reading belongs to the composite it was taken from. Dropping it on
+    // attach stops yesterday's number sitting over today's imagery.
+    parts.sampling.clearReadout();
     governorRequestRender('temperature-attach');
   }
 
