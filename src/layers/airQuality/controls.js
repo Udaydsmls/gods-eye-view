@@ -1,4 +1,4 @@
-import { summarizeGrid } from './scale.js';
+import { aqiLegend, summarizeGrid } from './scale.js';
 import { AQI_BANDS, COVERAGE_NOTE, DEFAULT_ALPHA, LAYER_ID } from './policy.js';
 
 export function createControls({ state: layerState, parts }) {
@@ -20,6 +20,18 @@ export function createControls({ state: layerState, parts }) {
     aqiBands: AQI_BANDS,
 
     defaultAlpha: DEFAULT_ALPHA,
+
+    /**
+     * The colour scale, rendered beside the map on this layer's row.
+     *
+     * A heat map is unreadable without its key: the cell colours mean nothing
+     * until the AQI bands they stand for are on screen. Uses the manager's
+     * existing row-controls contract, so no new panel is introduced.
+     * @returns {{chips: Array<object>, legend: Array<object>}} Row controls.
+     */
+    getRowControls() {
+      return { chips: [], legend: aqiLegend(layerState.cells) };
+    },
 
     setOpacity(value) {
       return parts.rendering.setAlpha(value);

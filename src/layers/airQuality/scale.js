@@ -44,3 +44,38 @@ export function summarizeGrid(cells) {
     peakLabel: aqiLabel(peak),
   };
 }
+
+/**
+ * Per-band cell tally for the layer-row legend.
+ *
+ * Only bands actually present are returned, so the scale beside the map shows
+ * what is in view rather than a fixed six-swatch key that is mostly empty. The
+ * order follows AQI_BANDS, which is the published EPA order — a legend sorted
+ * by count would reshuffle as the camera moves and stop being learnable.
+ * @param {Array<object>} cells Grid cells.
+ * @returns {Array<{label:string, color:string, count:number, blurb:string}>} Legend entries.
+ */
+export function aqiLegend(cells) {
+  const list = Array.isArray(cells) ? cells : [];
+  const counts = new Map();
+  for (const cell of list) {
+    const band = aqiBand(cell?.aqi);
+    if (!band) continue;
+    counts.set(band.label, (counts.get(band.label) || 0) + 1);
+  }
+  const entries = [];
+  let floor = 0;
+  for (const band of AQI_BANDS) {
+    const count = counts.get(band.label) || 0;
+    const range = band.max === Infinity ? `${floor}+` : `${floor}-${band.max}`;
+    floor = band.max + 1;
+    if (!count) continue;
+    entries.push({
+      label: `${range}`,
+      color: band.color,
+      count,
+      blurb: `US AQI ${range} — ${band.label} (${count} cells in view)`,
+    });
+  }
+  return entries;
+}
