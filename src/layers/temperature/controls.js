@@ -1,4 +1,5 @@
 import { freshnessLabel } from './dates.js';
+import { temperatureLegend } from './scale.js';
 import { COVERAGE_NOTE, DEFAULT_ALPHA, LAYER_ID } from './policy.js';
 
 export function createControls({ state: layerState, services, parts }) {
@@ -17,6 +18,22 @@ export function createControls({ state: layerState, services, parts }) {
     statsRefreshInterval: 2000,
 
     defaultAlpha: DEFAULT_ALPHA,
+
+    /**
+     * The colour scale, rendered beside the map on this layer's row.
+     *
+     * A heat map is unreadable without its key: NASA bakes the ramp into the
+     * tiles, so nothing on screen says what a colour means until the scale is
+     * shown. Uses the manager's existing row-controls contract, so no new panel
+     * is introduced.
+     * @returns {{chips: Array<object>, legend: Array<object>}} Row controls.
+     */
+    getRowControls() {
+      // Nothing is painted while no composite is attached, and a scale for an
+      // absent overlay describes nothing.
+      if (!layerState.imageryLayer) return { chips: [], legend: [] };
+      return { chips: [], legend: temperatureLegend() };
+    },
 
     /**
      * Set overlay opacity.

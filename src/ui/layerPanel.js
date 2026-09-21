@@ -340,7 +340,13 @@ export class LayerPanel {
       swatch.className = 'data-toggle-legend-swatch';
       swatch.style.background = item.color;
       const text = document.createElement('span');
-      text.textContent = `${item.label} ${this._formatCount(item.count)}`;
+      // A continuous-scale legend (a colour ramp) carries no count, only a
+      // bound label. Appending a formatted `undefined` would print noise next
+      // to every swatch.
+      text.textContent =
+        item.count === undefined || item.count === null
+          ? String(item.label)
+          : `${item.label} ${this._formatCount(item.count)}`;
       entry.append(swatch, text);
       container.appendChild(entry);
     }
