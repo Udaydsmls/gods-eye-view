@@ -115,6 +115,13 @@ export const DATA_CREDITS = [
       'via Nominatim (ODbL 1.0)',
   },
   {
+    key: 'open-meteo-air-quality',
+    html:
+      'Air quality: ' +
+      '<a href="https://open-meteo.com/en/licence" target="_blank" rel="noopener">Open-Meteo.com</a> ' +
+      '(CC BY 4.0) from Copernicus Atmosphere Monitoring Service (CAMS)',
+  },
+  {
     key: 'open-meteo',
     html:
       'Cockpit current conditions: ' +

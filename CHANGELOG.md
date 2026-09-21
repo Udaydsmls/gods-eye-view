@@ -1,5 +1,10 @@
 # Changelog
 
+- Add a keyless Air Quality heat map: a viewport grid of modelled US AQI cells
+  from Open-Meteo's CAMS forecast, drawn ground-clamped in the published EPA
+  band colours with an opacity control. One upstream call serves the whole grid;
+  unmodelled cells are omitted rather than shaded.
+
 - Enable responsive trackpad pinch zoom on the globe. Browser pixel-mode
   `Ctrl+wheel` pinch gestures now reach Cesium with bounded amplification,
   while ordinary wheel, line-mode and touch-pinch inputs retain their existing

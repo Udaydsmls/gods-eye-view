@@ -1,5 +1,16 @@
 # God's Eye View Current State
 
+Air Quality is a keyless, camera-driven heat map over Open-Meteo's CAMS
+forecast. The `/api/air-quality/grid` proxy turns a viewport into a grid of cell
+centres and reads them all in one upstream call, so cost is flat in area rather
+than in cell count; the grid side is capped at 16 because 20 exceeds the
+upstream URL limit. Cells are drawn as ground-clamped rectangles in the
+published US EPA AQI band colours, outlined so adjacent same-band cells stay
+distinguishable, and a cell the model does not cover is omitted rather than
+shaded. The readout reports the worst band in view rather than an average, and
+states that the values are modelled at roughly 11 km over Europe and 45 km
+globally rather than measured at stations.
+
 AIS encodes speed over ground in 0.1-knot units and course over ground in
 0.1-degree units, reserving the top code of each field for "not available", so
 those reports arrive as 102.3 knots and 360 degrees. Both are stored as unknown,
