@@ -920,6 +920,22 @@
     ],
     "external": ["cesium"]
   },
+  "temperature-layer": {
+    "exports": ["./layers/temperature"],
+    "modules": [
+      "src/layers/temperature/controls.js",
+      "src/layers/temperature/dates.js",
+      "src/layers/temperature/index.js",
+      "src/layers/temperature/ingestion.js",
+      "src/layers/temperature/lifecycle.js",
+      "src/layers/temperature/policy.js",
+      "src/layers/temperature/rendering.js",
+      "src/layers/temperature/source.js",
+      "src/layers/temperature/state.js",
+      "src/maps/imagery.js"
+    ],
+    "external": ["cesium"]
+  },
   "awareness-layer": {
     "exports": ["./layers/awareness"],
     "modules": [
@@ -1809,7 +1825,18 @@
       "src/director/sharing/lifetime.js",
       "src/director/authoring.js",
       "src/scenes/sharing.js",
-      "src/ui/sceneSharing.js"
+      "src/ui/sceneSharing.js",
+      "src/app/layers/temperature.js",
+      "src/layers/temperature/controls.js",
+      "src/layers/temperature/dates.js",
+      "src/layers/temperature/index.js",
+      "src/layers/temperature/ingestion.js",
+      "src/layers/temperature/lifecycle.js",
+      "src/layers/temperature/policy.js",
+      "src/layers/temperature/rendering.js",
+      "src/layers/temperature/source.js",
+      "src/layers/temperature/state.js",
+      "src/layers/temperature/probe.js"
     ],
     "external": [
       "@mapbox/vector-tile",
@@ -2203,7 +2230,19 @@
       "src/sources/overpassFeaturesRecords.js",
       "src/sources/overpassFeatures.js",
       "src/sources/featureSource.js",
-      "src/sources/overpassRoads.js"
+      "src/sources/overpassRoads.js",
+      "src/app/layers/temperature.js",
+      "src/layers/temperature/controls.js",
+      "src/layers/temperature/dates.js",
+      "src/layers/temperature/index.js",
+      "src/layers/temperature/ingestion.js",
+      "src/layers/temperature/lifecycle.js",
+      "src/layers/temperature/policy.js",
+      "src/layers/temperature/rendering.js",
+      "src/layers/temperature/source.js",
+      "src/layers/temperature/state.js",
+      "src/maps/imagery.js",
+      "src/layers/temperature/probe.js"
     ],
     "external": [
       "cesium",
@@ -2464,6 +2503,15 @@
     "modules": [
       "src/layers/installations/source.js",
       "src/data/militaryInstallationData.js"
+    ],
+    "external": []
+  },
+  "temperature-source": {
+    "exports": ["./layers/temperature/source"],
+    "modules": [
+      "src/layers/temperature/dates.js",
+      "src/layers/temperature/policy.js",
+      "src/layers/temperature/source.js"
     ],
     "external": []
   },

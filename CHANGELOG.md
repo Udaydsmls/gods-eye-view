@@ -1,5 +1,10 @@
 # Changelog
 
+- Add a keyless Surface Temperature heat-map overlay from NASA GIBS, using the
+  MODIS Terra 8-day land-surface-temperature composite with an opacity control.
+  The layer resolves the newest published composite period before attaching, so
+  an unpublished period degrades to an older one instead of a blank globe.
+
 - Enable responsive trackpad pinch zoom on the globe. Browser pixel-mode
   `Ctrl+wheel` pinch gestures now reach Cesium with bounded amplification,
   while ordinary wheel, line-mode and touch-pinch inputs retain their existing

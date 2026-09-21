@@ -115,6 +115,13 @@ export const DATA_CREDITS = [
       'via Nominatim (ODbL 1.0)',
   },
   {
+    key: 'nasa-gibs',
+    html:
+      'Surface temperature: ' +
+      '<a href="https://nasa-gibs.github.io/gibs-api-docs/" target="_blank" rel="noopener">NASA EOSDIS GIBS</a> ' +
+      '(MODIS Terra land surface temperature, 8-day composite)',
+  },
+  {
     key: 'open-meteo',
     html:
       'Cockpit current conditions: ' +

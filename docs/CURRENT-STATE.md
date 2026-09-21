@@ -1,5 +1,16 @@
 # God's Eye View Current State
 
+Surface Temperature is a keyless NASA GIBS imagery overlay rather than a vector
+layer: its renderer owns a Cesium ImageryLayer added above the basemap, so a map
+stack switch leaves it in place, and it exposes an opacity control instead of
+records. It uses the MODIS Terra 8-day land-surface-temperature composite and
+reads tiles from the EPSG:3857 endpoint, because the GIBS geographic matrix sets
+are not power-of-two pyramids and Cesium mispositions them. Availability is
+resolved by image probe, not fetch: GIBS omits CORS headers on the 404 for an
+unpublished period, so a fetch probe cannot distinguish that from an outage. The
+readout names the composite period and its age, and states that the retrieval is
+clear-sky land only.
+
 AIS encodes speed over ground in 0.1-knot units and course over ground in
 0.1-degree units, reserving the top code of each field for "not available", so
 those reports arrive as 102.3 knots and 360 degrees. Both are stored as unknown,

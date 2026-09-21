@@ -26,6 +26,7 @@ How to read this:
 | **The Space Devs — Launch Library 2 v2.3**                            | Recent launch, payload, stage, and recovery metadata for Space Missions (30d)                                                       | [The Space Devs terms of use](https://github.com/TheSpaceDevs/Tutorials/blob/main/faqs/faq_TSD.md#terms-of-use): data may be used and shared in any form; avoid forwarding it without added value; attribution is encouraged (not mandatory). [Official API limits](https://ll.thespacedevs.com/docs/): 15 unauthenticated calls/hour; optional token | "Launch Library 2 — The Space Devs" (courtesy attribution)                                                                                  |
 | **Esri World Imagery** (ArcGIS Online tile service)                   | The keyless satellite basemap — the default landing when no Google/ion credential is configured, and the "Esri Satellite" map stack | [Esri Master Agreement](https://www.esri.com/en-us/legal/terms/full-master-agreement): the public World Imagery service is usable in public-facing apps with attribution; no key is required for this classic endpoint, but Esri governs and can change access — an app at scale should review current ArcGIS Location Platform terms                 | "Powered by Esri — Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community" (provider carries the service's own credit line) |
 | **USGS**                                                              | Earthquakes                                                                                                                         | U.S. public domain                                                                                                                                                                                                                                                                                                                                    | "Data courtesy of the U.S. Geological Survey"                                                                                               |
+| **NASA GIBS** (Global Imagery Browse Services)                        | Surface-temperature heat-map overlay: MODIS Terra land-surface temperature, 8-day composite | U.S. public domain / open access; no key, no registration. [GIBS citation guidance](https://nasa-gibs.github.io/gibs-api-docs/) | "NASA EOSDIS Global Imagery Browse Services (GIBS)" — carried on the imagery layer credit |
 | **OpenStreetMap (Overpass API)**                                      | Road geometry for traffic                                                                                                           | ODbL 1.0                                                                                                                                                                                                                                                                                                                                              | "© OpenStreetMap contributors"                                                                                                              |
 | **TomTom Traffic API** (flow vector tiles)                            | Live congestion coloring for the traffic layer (optional, BYOK)                                                                     | [TomTom for Developers terms](https://developer.tomtom.com) (proprietary, your own key; free tier currently 200K tile requests/month — see [current pricing](https://docs.tomtom.com/pricing/))                                                                                                                                                       | "Traffic flow data © TomTom" — registered when live mode activates                                                                          |
 | **OpenStreetMap (Overpass API)**                                      | Viewport-bounded mapped installation context for Global Context                                                                     | ODbL 1.0                                                                                                                                                                                                                                                                                                                                              | "© OpenStreetMap contributors" (incomplete mapped context)                                                                                  |
@@ -152,6 +153,23 @@ Suomi-NPP) clamped to the trailing 24 h, cached 30 min to respect the shared MAP
 transaction quota. Requires a free `FIRMS_MAP_KEY`
 (https://firms.modaps.eosdis.nasa.gov/api/map_key/); the layer is empty without it.
 The former bundled 2026-05-25 snapshot was removed 2026-07-16.
+
+### NASA GIBS surface temperature
+
+Tiles are fetched live from GIBS at runtime; nothing is stored in this repo.
+Three properties are surfaced in the app rather than left to the reader:
+
+- **It is an 8-day average, not a current reading.** The layer names the
+  composite period and its age. The daily product was measured at roughly half
+  the data volume of the composite on the same tile (23.5 kB against 42.5 kB)
+  because a single day from a single satellite is swath-gapped, so the composite
+  is used and its averaging is stated.
+- **It is a clear-sky land retrieval.** Water and persistently cloudy areas
+  carry no value and render transparent; a gap is missing data, not a mild
+  temperature.
+- **The colour ramp is NASA's, baked into the tiles.** The client does not map
+  values to colours, so the scale is the published one rather than one invented
+  here.
 
 ### Natural Earth physical regions (`natural_earth/`)
 
