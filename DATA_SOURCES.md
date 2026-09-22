@@ -26,6 +26,7 @@ How to read this:
 | **The Space Devs — Launch Library 2 v2.3**                            | Recent launch, payload, stage, and recovery metadata for Space Missions (30d)                                                       | [The Space Devs terms of use](https://github.com/TheSpaceDevs/Tutorials/blob/main/faqs/faq_TSD.md#terms-of-use): data may be used and shared in any form; avoid forwarding it without added value; attribution is encouraged (not mandatory). [Official API limits](https://ll.thespacedevs.com/docs/): 15 unauthenticated calls/hour; optional token | "Launch Library 2 — The Space Devs" (courtesy attribution)                                                                                  |
 | **Esri World Imagery** (ArcGIS Online tile service)                   | The keyless satellite basemap — the default landing when no Google/ion credential is configured, and the "Esri Satellite" map stack | [Esri Master Agreement](https://www.esri.com/en-us/legal/terms/full-master-agreement): the public World Imagery service is usable in public-facing apps with attribution; no key is required for this classic endpoint, but Esri governs and can change access — an app at scale should review current ArcGIS Location Platform terms                 | "Powered by Esri — Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community" (provider carries the service's own credit line) |
 | **USGS**                                                              | Earthquakes                                                                                                                         | U.S. public domain                                                                                                                                                                                                                                                                                                                                    | "Data courtesy of the U.S. Geological Survey"                                                                                               |
+| **Open-Meteo Forecast API**                                           | Two-metre air-temperature heat map: temperature, apparent temperature, humidity and wind per grid cell | [CC BY 4.0 data licence, attribution required](https://open-meteo.com/en/licence); no key, fair-use request rate | Linked "Weather data by Open-Meteo.com" |
 | **OpenStreetMap (Overpass API)**                                      | Road geometry for traffic                                                                                                           | ODbL 1.0                                                                                                                                                                                                                                                                                                                                              | "© OpenStreetMap contributors"                                                                                                              |
 | **TomTom Traffic API** (flow vector tiles)                            | Live congestion coloring for the traffic layer (optional, BYOK)                                                                     | [TomTom for Developers terms](https://developer.tomtom.com) (proprietary, your own key; free tier currently 200K tile requests/month — see [current pricing](https://docs.tomtom.com/pricing/))                                                                                                                                                       | "Traffic flow data © TomTom" — registered when live mode activates                                                                          |
 | **OpenStreetMap (Overpass API)**                                      | Viewport-bounded mapped installation context for Global Context                                                                     | ODbL 1.0                                                                                                                                                                                                                                                                                                                                              | "© OpenStreetMap contributors" (incomplete mapped context)                                                                                  |
@@ -152,6 +153,28 @@ Suomi-NPP) clamped to the trailing 24 h, cached 30 min to respect the shared MAP
 transaction quota. Requires a free `FIRMS_MAP_KEY`
 (https://firms.modaps.eosdis.nasa.gov/api/map_key/); the layer is empty without it.
 The former bundled 2026-05-25 snapshot was removed 2026-07-16.
+
+### Open-Meteo air temperature
+
+Sampled live at runtime through the `/api/air-temperature` proxy, which builds a
+grid of cell centres for the viewport and reads them in one upstream call.
+Three properties are surfaced in the app rather than left to the reader:
+
+- **It is two-metre air temperature, not ground temperature.** The distinction
+  matters: measured against NASA's land-surface product on the same day, the
+  Sahara read 46.6 °C at the ground and 30.4 °C in the air. The readout names
+  the quantity for that reason.
+- **It is a model, not a station reading.** A cell is a modelled value for an
+  area, and the readout states the cell's span in kilometres so it is not taken
+  for a measurement at the clicked point.
+- **A cell with no value is drawn as nothing at all.** Zero degrees is a real
+  temperature, so "not modelled" is never allowed to render as the freezing
+  band.
+
+The colour ramp is **a presentation choice made here**, unlike the EPA air
+quality bands or NASA's baked-in land-surface palette. That is why the legend
+carries degree bounds rather than words: the colours are an encoding the reader
+can check against the scale, not an authority.
 
 ### Natural Earth physical regions (`natural_earth/`)
 

@@ -230,6 +230,21 @@
     ],
     "external": []
   },
+  "air-temperature-provider": {
+    "runtime": "node",
+    "exports": ["./server/providers/air-temperature"],
+    "modules": [
+      "server/providers/air-temperature.js",
+      "server/providers/air-temperature/constants.js",
+      "server/providers/air-temperature/grid.js",
+      "server/providers/common/http.js",
+      "server/providers/common/query.js",
+      "server/providers/common/rate-limit.js",
+      "src/sources/httpBody.js",
+      "src/sources/rateLimit.js"
+    ],
+    "external": []
+  },
   "regional-provider": {
     "runtime": "node",
     "exports": ["./server/providers/regional"],
@@ -917,6 +932,24 @@
       "src/layers/installations/state.js",
       "src/layers/installations/viewport.js",
       "src/data/inputOwnership.js"
+    ],
+    "external": ["cesium"]
+  },
+  "air-temperature-layer": {
+    "exports": ["./layers/air-temperature"],
+    "modules": [
+      "src/data/inputOwnership.js",
+      "src/layers/airTemperature/controls.js",
+      "src/layers/airTemperature/index.js",
+      "src/layers/airTemperature/ingestion.js",
+      "src/layers/airTemperature/lifecycle.js",
+      "src/layers/airTemperature/policy.js",
+      "src/layers/airTemperature/rendering.js",
+      "src/layers/airTemperature/sampling.js",
+      "src/layers/airTemperature/scale.js",
+      "src/layers/airTemperature/source.js",
+      "src/layers/airTemperature/state.js",
+      "src/layers/airTemperature/viewport.js"
     ],
     "external": ["cesium"]
   },
@@ -1809,7 +1842,19 @@
       "src/director/sharing/lifetime.js",
       "src/director/authoring.js",
       "src/scenes/sharing.js",
-      "src/ui/sceneSharing.js"
+      "src/ui/sceneSharing.js",
+      "src/app/layers/airTemperature.js",
+      "src/layers/airTemperature/controls.js",
+      "src/layers/airTemperature/index.js",
+      "src/layers/airTemperature/ingestion.js",
+      "src/layers/airTemperature/lifecycle.js",
+      "src/layers/airTemperature/policy.js",
+      "src/layers/airTemperature/rendering.js",
+      "src/layers/airTemperature/sampling.js",
+      "src/layers/airTemperature/scale.js",
+      "src/layers/airTemperature/source.js",
+      "src/layers/airTemperature/state.js",
+      "src/layers/airTemperature/viewport.js"
     ],
     "external": [
       "@mapbox/vector-tile",
@@ -2203,7 +2248,19 @@
       "src/sources/overpassFeaturesRecords.js",
       "src/sources/overpassFeatures.js",
       "src/sources/featureSource.js",
-      "src/sources/overpassRoads.js"
+      "src/sources/overpassRoads.js",
+      "src/app/layers/airTemperature.js",
+      "src/layers/airTemperature/controls.js",
+      "src/layers/airTemperature/index.js",
+      "src/layers/airTemperature/ingestion.js",
+      "src/layers/airTemperature/lifecycle.js",
+      "src/layers/airTemperature/policy.js",
+      "src/layers/airTemperature/rendering.js",
+      "src/layers/airTemperature/sampling.js",
+      "src/layers/airTemperature/scale.js",
+      "src/layers/airTemperature/source.js",
+      "src/layers/airTemperature/state.js",
+      "src/layers/airTemperature/viewport.js"
     ],
     "external": [
       "cesium",
@@ -2464,6 +2521,14 @@
     "modules": [
       "src/layers/installations/source.js",
       "src/data/militaryInstallationData.js"
+    ],
+    "external": []
+  },
+  "air-temperature-source": {
+    "exports": ["./layers/air-temperature/source"],
+    "modules": [
+      "src/layers/airTemperature/policy.js",
+      "src/layers/airTemperature/source.js"
     ],
     "external": []
   },

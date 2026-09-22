@@ -1,5 +1,10 @@
 # Changelog
 
+- Add a keyless Air Temperature heat map: a viewport grid of modelled two-metre
+  air temperature from Open-Meteo, drawn ground-clamped with an opacity control
+  and a degree-labelled legend. Clicking a cell reads its exact value with
+  apparent temperature, humidity, wind, model elevation and observation time.
+
 - Enable responsive trackpad pinch zoom on the globe. Browser pixel-mode
   `Ctrl+wheel` pinch gestures now reach Cesium with bounded amplification,
   while ordinary wheel, line-mode and touch-pinch inputs retain their existing

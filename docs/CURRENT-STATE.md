@@ -1,5 +1,19 @@
 # God's Eye View Current State
 
+Air Temperature is a keyless, camera-driven heat map of modelled two-metre air
+temperature over Open-Meteo. The `/api/air-temperature/grid` proxy turns a
+viewport into a grid of cell centres and reads them all in one upstream call, so
+cost is flat in area rather than in cell count; the grid side is capped at 16
+because 20 exceeds the upstream URL limit. Clicking a cell reads its value
+exactly — the cell already carries the number the model produced, so unlike the
+land-surface overlay nothing has to be recovered from a colour — and the readout
+states the quantity, the cell span, the model elevation and the observation
+hour. The readout has its own data source so clearing it never disturbs the
+grid, and a new grid retires it. Cells the model has no value for are omitted
+rather than shaded, because zero degrees is a real temperature. The colour ramp
+is a presentation choice rather than a published standard, so the legend carries
+degree bounds instead of words.
+
 AIS encodes speed over ground in 0.1-knot units and course over ground in
 0.1-degree units, reserving the top code of each field for "not available", so
 those reports arrive as 102.3 knots and 360 degrees. Both are stored as unknown,

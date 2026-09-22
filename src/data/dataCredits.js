@@ -115,6 +115,13 @@ export const DATA_CREDITS = [
       'via Nominatim (ODbL 1.0)',
   },
   {
+    key: 'open-meteo-air-temperature',
+    html:
+      'Air temperature: ' +
+      '<a href="https://open-meteo.com/en/licence" target="_blank" rel="noopener">Weather data by Open-Meteo.com</a> ' +
+      '(CC BY 4.0)',
+  },
+  {
     key: 'open-meteo',
     html:
       'Cockpit current conditions: ' +
