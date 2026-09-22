@@ -66,18 +66,38 @@ export function dateAgeDays(date, now) {
 }
 
 /**
+ * The last day covered by the period starting on `date`.
+ *
+ * Periods restart every January, so the final window of a year is short — 27
+ * to 31 December is five days, not eight. Clamping at the year end is what
+ * stops a December composite claiming to cover days in the next year.
+ * @param {string} date Period start date.
+ * @returns {string} Last covered date.
+ */
+export function periodEnd(date) {
+  const year = Number(date.slice(0, 4));
+  const start = Date.parse(`${date}T00:00:00Z`);
+  const naive = start + (COMPOSITE_PERIOD_DAYS - 1) * DAY_MS;
+  const lastOfYear = Date.UTC(year, 11, 31);
+  return utcDate(Math.min(naive, lastOfYear));
+}
+
+/**
  * Freshness for the layer readout.
  *
- * Names the period start rather than "today", because an 8-day composite is an
- * average over its window — reporting it as a current reading would overstate
- * what the pixel means.
+ * Names the window and the age of its NEWEST day, not of its start. Measuring
+ * from the start overstates staleness by the whole window: a composite covering
+ * the 6th to the 13th read as "16 days old" on the 21st when its most recent
+ * observation was eight days back. The window is still shown, because the value
+ * is an average across it rather than a reading from its last day.
  * @param {?string} date Resolved period start.
  * @param {number} now Instant.
  * @returns {string} Freshness label.
  */
 export function freshnessLabel(date, now) {
   if (!date) return 'no composite resolved';
-  const age = dateAgeDays(date, now);
+  const end = periodEnd(date);
+  const age = dateAgeDays(end, now);
   if (!Number.isFinite(age)) return date;
-  return `${COMPOSITE_PERIOD_DAYS}-day composite from ${date} · ${age}d old`;
+  return `${COMPOSITE_PERIOD_DAYS}-day mean, ${date} to ${end} · newest ${age}d old`;
 }

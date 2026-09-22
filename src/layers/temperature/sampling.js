@@ -46,7 +46,10 @@ export function createSampling({ state: layerState, services, parts, source }) {
    */
   function readoutLines(sample) {
     const lines = [];
-    if (sample.outcome === 'measured') lines.push('land surface, 8-day mean');
+    // The window itself is named on the freshness line below; this line only
+    // has to say which quantity the number is, because land surface temperature
+    // and air temperature differ by tens of degrees in sun.
+    if (sample.outcome === 'measured') lines.push('land surface temperature');
     // Cloud, water, or outside the retrieval. Saying so is the whole point: a
     // gap here is not a mild temperature.
     else if (sample.outcome === 'no-value')

@@ -5,6 +5,7 @@ import {
   dateAgeDays,
   dayOfYear,
   freshnessLabel,
+  periodEnd,
   periodStart,
   utcDate,
 } from './dates.js';
@@ -52,11 +53,27 @@ test('dates are computed in UTC, not the host timezone', () => {
   assert.equal(utcDate(Date.parse('2026-09-21T00:30:00Z')), '2026-09-21');
 });
 
-test('freshness names the period and its age, never implying a live reading', () => {
-  assert.equal(
-    freshnessLabel('2026-09-06', NOW),
-    '8-day composite from 2026-09-06 · 15d old',
-  );
+test('a period covers eight days, and December is clamped to the year end', () => {
+  assert.equal(periodEnd('2026-09-06'), '2026-09-13');
+  assert.equal(periodEnd('2026-01-01'), '2026-01-08');
+  // The final window of a year is short; letting it run on would claim to
+  // cover days that belong to the next year's first period.
+  assert.equal(periodEnd('2026-12-27'), '2026-12-31');
+});
+
+test('freshness reports the age of the newest day, not of the window start', () => {
+  // Measured against the live service on 2026-09-21: the window starting
+  // 09-14 was not yet published, so 09-06 was newest. Its start is 15 days
+  // back but its most recent observation is only 8, and reporting the start
+  // overstated staleness by the whole window.
+  const label = freshnessLabel('2026-09-06', NOW);
+  assert.match(label, /2026-09-06 to 2026-09-13/);
+  assert.match(label, /newest 8d old/);
+  assert.ok(!label.includes('15d'));
+  assert.ok(!label.includes('16d'));
+});
+
+test('freshness says so when nothing resolved', () => {
   assert.equal(freshnessLabel(null, NOW), 'no composite resolved');
   assert.ok(Number.isNaN(dateAgeDays('not-a-date', NOW)));
 });
