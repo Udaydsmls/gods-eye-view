@@ -1,22 +1,33 @@
+import { msg, t, tn } from '../../i18n/index.js';
 import { dayLabel, seasonLabel } from './dates.js';
 import { LAYER_ID } from './policy.js';
 
 export function createControls({ state: layerState, parts }) {
   function statusMessage(view) {
-    if (layerState.loading) return 'Loading avalanche data…';
+    if (layerState.loading) return msg('Loading avalanche data…');
     if (layerState.status === 'unavailable')
-      return layerState.error || 'Avalanche data unavailable';
-    if (layerState.status === 'idle') return 'Avalanches off';
+      return layerState.error || msg('Avalanche data unavailable');
+    if (layerState.status === 'idle') return msg('Avalanches off');
     const window = layerState.window;
-    if (!window) return 'Loading avalanche data…';
+    if (!window) return msg('Loading avalanche data…');
     if (window.mode === 'replay')
-      return `Replay ${seasonLabel(window.season)} · week of ${dayLabel(window.weekFrom ?? window.anchor)}`;
+      return t('Replay {season} · week of {day}', {
+        season: seasonLabel(window.season),
+        day: dayLabel(window.weekFrom ?? window.anchor),
+      });
     if (layerState.quiet)
-      return 'Out of season · replay last season from the map';
+      return msg('Out of season · replay last season from the map');
     const rated = window.regions.filter((region) =>
       region.days.some((day) => day.date === window.anchor && day.level > 0),
     ).length;
-    return `${window.observations.length} avalanches this week · ${rated} regions rated today`;
+    return t('{avalanches} this week · {regions} rated today', {
+      avalanches: tn(
+        window.observations.length,
+        '{count} avalanche',
+        '{count} avalanches',
+      ),
+      regions: tn(rated, '{count} region', '{count} regions'),
+    });
   }
 
   const methods = {
@@ -51,7 +62,7 @@ export function createControls({ state: layerState, parts }) {
         // An empty off-season window is the source working, not failing.
         empty: Boolean(window) && layerState.quiet,
         statusMessage: statusMessage(view),
-        loadingLabel: layerState.loading ? 'loading avalanche data' : '',
+        loadingLabel: layerState.loading ? msg('loading avalanche data') : '',
       };
     },
   };

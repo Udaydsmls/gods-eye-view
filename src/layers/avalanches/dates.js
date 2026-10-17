@@ -1,21 +1,7 @@
+import { formatDate } from '../../i18n/index.js';
 import { FORECAST_DAYS, PAST_DAYS, SEASON } from './policy.js';
 
 const DAY_MS = 86_400_000;
-const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-const MONTHS = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
-];
 
 /** @param {number} epochMs Instant. @returns {string} UTC calendar date. */
 export function utcDate(epochMs) {
@@ -45,15 +31,19 @@ export function windowDays(anchor) {
   return days;
 }
 
-/** @param {string} date ISO date. @returns {string} e.g. `Thu 5 Mar`. */
+/** @param {string} date ISO date. @returns {string} Weekday, day and month in the active locale. */
 export function dayLabel(date) {
-  const at = new Date(`${date}T00:00:00Z`);
-  return `${WEEKDAYS[at.getUTCDay()]} ${at.getUTCDate()} ${MONTHS[at.getUTCMonth()]}`;
+  return formatDate(dayStartMs(date), {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    timeZone: 'UTC',
+  });
 }
 
-/** @param {string} date ISO date. @returns {string} Weekday initial, e.g. `T`. */
+/** @param {string} date ISO date. @returns {string} Weekday initial in the active locale. */
 export function dayInitial(date) {
-  return WEEKDAYS[new Date(`${date}T00:00:00Z`).getUTCDay()].slice(0, 1);
+  return formatDate(dayStartMs(date), { weekday: 'narrow', timeZone: 'UTC' });
 }
 
 /** @param {string} date ISO date. @returns {boolean} Whether Varsom forecasts on that day. */

@@ -172,7 +172,7 @@ test('a window is seven observed days, the anchor, and two forecast days', () =>
     ['2026-03-09', '2026-03-10'],
   );
   assert.equal(addDays('2026-02-28', 1), '2026-03-01');
-  assert.equal(dayLabel('2026-03-05'), 'Thu 5 Mar');
+  assert.equal(dayLabel('2026-03-05'), 'Thu, Mar 5');
 });
 
 test('seasons run December to May and an off-season date belongs to the last one', () => {
@@ -270,7 +270,7 @@ test('cards name the rating per day, mark forecasts, and credit the observer', (
     7,
   );
   assert.equal(card.title, 'Lyngen');
-  assert.match(card.details[0], /^Sun 8 Mar\s+3 Considerable ↑$/);
+  assert.match(card.details[0], /^Sun, Mar 8\s+3 Considerable ↑$/);
   assert.match(card.details[1], /4 High ↓ \(forecast\)$/);
   assert.equal(card.accent, '#ff9900');
   assert.ok(card.details.includes('Varsom · NVE'));
@@ -292,7 +292,7 @@ test('cards name the rating per day, mark forecasts, and credit the observer', (
     ),
   );
   assert.equal(obs.details.at(-1), 'regObs · Skred.AS');
-  assert.match(obs.details[0], /21:36 \(Norway\)$/);
+  assert.match(obs.details[0], /21:36 \(Norway time\)$/);
 });
 
 test('long text wraps to card width and is cut with an ellipsis', () => {
