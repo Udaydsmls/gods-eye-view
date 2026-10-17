@@ -1061,6 +1061,7 @@
   "recent-imagery": {
     "exports": ["./layers/recent-imagery"],
     "modules": [
+      "src/maps/gibs.js",
       "src/i18n/marker.js",
       "src/layers/recentImagery/index.js",
       "src/layers/recentImagery/source.js",
@@ -1212,6 +1213,13 @@
   "temperature-layer": {
     "exports": ["./layers/temperature"],
     "modules": [
+      "src/i18n/index.js",
+      "src/i18n/locales/ru.json",
+      "src/i18n/locales/es.json",
+      "src/i18n/locale.js",
+      "src/i18n/marker.js",
+      "src/layers/temperature/labels.js",
+      "src/maps/gibs.js",
       "src/layers/temperature/controls.js",
       "src/layers/temperature/dates.js",
       "src/layers/temperature/index.js",
@@ -1669,6 +1677,8 @@
       "./standalone/catalog"
     ],
     "modules": [
+      "src/layers/temperature/labels.js",
+      "src/maps/gibs.js",
       "src/ui/placeNames.js",
       "src/cyberSonarScene.js",
       "src/cyberSonar.js",
@@ -2546,6 +2556,8 @@
   "application-layer-construction": {
     "exports": ["./application/layers"],
     "modules": [
+      "src/layers/temperature/labels.js",
+      "src/maps/gibs.js",
       "src/cyberSonar.js",
       "src/data/approxDistance.js",
       "src/data/bhoteKoshiEvent.js",
@@ -3356,6 +3368,7 @@
   "recent-imagery-source": {
     "exports": ["./layers/recent-imagery/source"],
     "modules": [
+      "src/maps/gibs.js",
       "src/layers/recentImagery/source.js",
       "src/layers/recentImagery/catalog.js",
       "src/layers/recentImagery/model.js"
@@ -3495,6 +3508,8 @@
   "temperature-source": {
     "exports": ["./layers/temperature/source"],
     "modules": [
+      "src/i18n/marker.js",
+      "src/maps/gibs.js",
       "src/layers/temperature/dates.js",
       "src/layers/temperature/policy.js",
       "src/layers/temperature/source.js"
@@ -3891,6 +3906,7 @@
   "tools-services": {
     "exports": ["./tools/services"],
     "modules": [
+      "src/maps/gibs.js",
       "src/tools/services.js",
       "src/layers/bikeshare/registry.js",
       "src/layers/bikeshare/source.js",
