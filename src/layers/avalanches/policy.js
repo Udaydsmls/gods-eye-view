@@ -1,3 +1,5 @@
+import { msg } from '../../i18n/marker.js';
+
 export const LAYER_ID = 'avalanches';
 
 /** Same-origin proxy (server/providers/avalanches.js). */
@@ -9,12 +11,12 @@ export const API_BASE = '/api/avalanches';
  * drawn as nothing rather than as a colour that could read as safe.
  */
 export const DANGER_LEVELS = Object.freeze([
-  Object.freeze({ level: 0, label: 'No rating', color: null }),
-  Object.freeze({ level: 1, label: 'Low', color: '#ccff66' }),
-  Object.freeze({ level: 2, label: 'Moderate', color: '#ffff00' }),
-  Object.freeze({ level: 3, label: 'Considerable', color: '#ff9900' }),
-  Object.freeze({ level: 4, label: 'High', color: '#ff0000' }),
-  Object.freeze({ level: 5, label: 'Very high', color: '#7a0000' }),
+  Object.freeze({ level: 0, label: msg('No rating'), color: null }),
+  Object.freeze({ level: 1, label: msg('Low'), color: '#ccff66' }),
+  Object.freeze({ level: 2, label: msg('Moderate'), color: '#ffff00' }),
+  Object.freeze({ level: 3, label: msg('Considerable'), color: '#ff9900' }),
+  Object.freeze({ level: 4, label: msg('High'), color: '#ff0000' }),
+  Object.freeze({ level: 5, label: msg('Very high'), color: '#7a0000' }),
 ]);
 
 /** Days of observed history before the anchor day. */

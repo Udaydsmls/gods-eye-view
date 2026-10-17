@@ -1,3 +1,4 @@
+import { formatDate, formatNumber, t } from '../../i18n/index.js';
 import { dayLabel } from './dates.js';
 import { dangerLevel, dangerTrend } from './model.js';
 import { PATH_COLOR } from './policy.js';
@@ -57,11 +58,11 @@ export function regionCard(region, ratings, days, day) {
     const level = ratings[index];
     const scale = dangerLevel(level);
     const sub = byDate.get(days[index].date)?.sub ?? '';
-    const rating = level ? `${level}${sub} ${scale.label}` : 'No rating';
+    const rating = level ? `${level}${sub} ${t(scale.label)}` : t('No rating');
     const trend = TREND[dangerTrend(ratings, index)];
-    const when = days[index].forecast ? ' (forecast)' : '';
+    const when = days[index].forecast ? ` ${t('(forecast)')}` : '';
     details.push(
-      `${dayLabel(days[index].date).padEnd(11)}${rating}${trend}${when}`,
+      `${dayLabel(days[index].date).padEnd(12)}${rating}${trend}${when}`,
     );
   }
   const summary = byDate.get(days[day].date)?.text;
@@ -77,13 +78,16 @@ export function regionCard(region, ratings, days, day) {
   };
 }
 
-const OSLO_TIME = new Intl.DateTimeFormat('en-GB', {
+/** Norwegian local time, where regObs observers report from. */
+const OSLO_TIME = Object.freeze({
   timeZone: 'Europe/Oslo',
   weekday: 'short',
   day: 'numeric',
   month: 'short',
   hour: '2-digit',
   minute: '2-digit',
+  // Observers report on a 24-hour clock; keep it in every locale.
+  hourCycle: 'h23',
 });
 
 /**
@@ -93,22 +97,35 @@ const OSLO_TIME = new Intl.DateTimeFormat('en-GB', {
  * @returns {{title:string, details:Array<string>, accent:string}}
  */
 export function observationCard(observation) {
-  const size = observation.size ? ` · ${observation.size}` : '';
-  const details = [`${OSLO_TIME.format(new Date(observation.time))} (Norway)`];
+  const details = [
+    t('{time} (Norway time)', {
+      time: formatDate(new Date(observation.time), OSLO_TIME),
+    }),
+  ];
   if (observation.type) details.push(observation.type);
   if (observation.trigger) details.push(observation.trigger);
   const { startElevationM: from, stopElevationM: to } = observation;
   if (from !== null && to !== null)
-    details.push(`Release ${from} m → runout ${to} m (${from - to} m drop)`);
-  else if (from !== null) details.push(`Release at ${from} m`);
-  if (!observation.stop) details.push('Release point only; no runout drawn');
+    details.push(
+      t('Release {from} m → runout {to} m ({drop} m drop)', {
+        from: formatNumber(from),
+        to: formatNumber(to),
+        drop: formatNumber(from - to),
+      }),
+    );
+  else if (from !== null)
+    details.push(t('Release at {from} m', { from: formatNumber(from) }));
+  if (!observation.stop) details.push(t('Release point only; no runout drawn'));
   if (observation.region) details.push(observation.region);
   details.push(
     '',
     `regObs${observation.observer ? ` · ${observation.observer}` : ''}`,
   );
   return {
-    title: `Avalanche${size}`,
+    // regObs reports size in English; it is shown as published.
+    title: observation.size
+      ? t('Avalanche · {size}', { size: observation.size })
+      : t('Avalanche'),
     details,
     accent: PATH_COLOR,
   };
@@ -139,7 +156,12 @@ export function cardEntry(id, card, position, activate = null) {
     terrainOcclusion: false,
     interactive: Boolean(activate),
     ...(activate
-      ? { activate, accessibilityLabel: `${card.title}: open source page` }
+      ? {
+          activate,
+          accessibilityLabel: t('{title}: open source page', {
+            title: card.title,
+          }),
+        }
       : {}),
   };
 }

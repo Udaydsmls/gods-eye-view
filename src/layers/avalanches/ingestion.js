@@ -1,3 +1,4 @@
+import { msg, t } from '../../i18n/index.js';
 import { seasonOf, utcDate, windowDays } from './dates.js';
 import { busiestWeek, isQuietWindow } from './model.js';
 
@@ -86,7 +87,7 @@ export function createIngestion({
       if (!current() || error?.name === 'AbortError') return false;
       console.warn('[Data:Avalanches] window load failed:', error);
       layerState.failureReason = error?.failureReason || 'unavailable';
-      setStatus('unavailable', 'Avalanche data unavailable');
+      setStatus('unavailable', msg('Avalanche data unavailable'));
       return false;
     } finally {
       if (layerState.abort === request) {
@@ -120,13 +121,16 @@ export function createIngestion({
       const week = busiestWeek(weeks);
       if (!week) {
         layerState.season = null;
-        setStatus('ready', `No avalanches were reported in ${season}`);
+        setStatus(
+          'ready',
+          t('No avalanches were reported in {season}', { season }),
+        );
         return false;
       }
       return loadWeek(week.from, week.to);
     } catch (error) {
       if (!layerState.enabled || error?.name === 'AbortError') return false;
-      setStatus('unavailable', 'Season history unavailable');
+      setStatus('unavailable', msg('Season history unavailable'));
       return false;
     } finally {
       layerState.loading = false;

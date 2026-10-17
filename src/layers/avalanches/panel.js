@@ -1,3 +1,4 @@
+import { formatNumber, t, tn, translateKnown } from '../../i18n/index.js';
 import { dayInitial, dayLabel, seasonLabel } from './dates.js';
 import { DANGER_LEVELS, PATH_COLOR } from './policy.js';
 
@@ -44,10 +45,14 @@ export function createAvalanchePanel({
   const root = element('div', 'avalanche-panel');
   root.hidden = true;
   root.setAttribute('role', 'group');
-  root.setAttribute('aria-label', 'Avalanche timeline');
+  root.setAttribute('aria-label', t('Avalanche timeline'));
 
   const kicker = element('div', 'avalanche-panel-kicker');
-  const kickerText = element('span', '', 'Avalanches · Norway · Switzerland');
+  const kickerText = element(
+    'span',
+    '',
+    t('Avalanches · Norway · Switzerland'),
+  );
   const mode = element('span', 'avalanche-panel-mode');
   kicker.append(kickerText, mode);
 
@@ -65,7 +70,7 @@ export function createAvalanchePanel({
   head.append(toggle, titles, collapse);
 
   const dayTrack = element('div', 'avalanche-panel-track is-days');
-  dayTrack.setAttribute('aria-label', 'Day');
+  dayTrack.setAttribute('aria-label', t('Day'));
   const playhead = element('span', 'avalanche-panel-playhead');
   playhead.setAttribute('aria-hidden', 'true');
   dayTrack.appendChild(playhead);
@@ -73,7 +78,7 @@ export function createAvalanchePanel({
   const legend = element('div', 'avalanche-panel-legend');
   for (const entry of DANGER_LEVELS.filter((level) => level.color)) {
     const item = element('span', 'avalanche-panel-legend-item');
-    item.title = `${entry.level} ${entry.label}`;
+    item.title = `${entry.level} ${t(entry.label)}`;
     const swatch = element('span', 'avalanche-panel-swatch');
     swatch.style.background = entry.color;
     item.append(swatch, element('span', '', String(entry.level)));
@@ -82,7 +87,7 @@ export function createAvalanchePanel({
   const pathKey = element('span', 'avalanche-panel-legend-item is-path');
   const pathSwatch = element('span', 'avalanche-panel-path');
   pathSwatch.style.background = PATH_COLOR;
-  pathKey.append(pathSwatch, element('span', '', 'observed avalanche'));
+  pathKey.append(pathSwatch, element('span', '', t('observed avalanche')));
   legend.appendChild(pathKey);
 
   const notice = element('div', 'avalanche-panel-notice');
@@ -93,10 +98,10 @@ export function createAvalanchePanel({
   const seasonBlock = element('div', 'avalanche-panel-season');
   const seasonHead = element('div', 'avalanche-panel-season-head');
   const seasonTitle = element('span', '');
-  const live = button('avalanche-panel-action is-quiet', 'Back to live');
+  const live = button('avalanche-panel-action is-quiet', t('Back to live'));
   seasonHead.append(seasonTitle, live);
   const weekTrack = element('div', 'avalanche-panel-track is-weeks');
-  weekTrack.setAttribute('aria-label', 'Week of the season');
+  weekTrack.setAttribute('aria-label', t('Week of the season'));
   seasonBlock.append(seasonHead, weekTrack);
 
   root.append(kicker, head, dayTrack, legend, notice, seasonBlock);
@@ -105,7 +110,7 @@ export function createAvalanchePanel({
   let collapsed = false;
   function applyCollapsed() {
     root.classList.toggle('is-collapsed', collapsed);
-    const label = collapsed ? 'Expand timeline' : 'Minimize timeline';
+    const label = collapsed ? t('Expand timeline') : t('Minimize timeline');
     collapse.title = label;
     collapse.setAttribute('aria-label', label);
     collapse.setAttribute('aria-expanded', String(!collapsed));
@@ -142,7 +147,9 @@ export function createAvalanchePanel({
     dayTicks = days.map((entry, index) => {
       const tick = button('avalanche-panel-tick');
       tick.dataset.day = String(index);
-      tick.title = `${dayLabel(entry.date)}${entry.forecast ? ' · forecast' : ''}`;
+      tick.title = entry.forecast
+        ? t('{day} · forecast', { day: dayLabel(entry.date) })
+        : dayLabel(entry.date);
       tick.classList.toggle('is-forecast', entry.forecast);
       tick.classList.toggle('is-anchor', entry.date === anchor);
       const initial = element(
@@ -173,7 +180,16 @@ export function createAvalanchePanel({
         const bar = button('avalanche-panel-week');
         bar.dataset.from = week.from;
         bar.dataset.to = week.to;
-        bar.title = `${dayLabel(week.from)} – ${dayLabel(week.to)}: ${week.count} avalanche observations`;
+        bar.title = t('{from} – {to}: {observations}', {
+          from: dayLabel(week.from),
+          to: dayLabel(week.to),
+          observations: tn(
+            week.count,
+            '{count} avalanche observation',
+            '{count} avalanche observations',
+            { count: formatNumber(week.count) },
+          ),
+        });
         bar.disabled = week.count === 0;
         const fill = element('span', 'avalanche-panel-week-fill');
         fill.style.height = `${Math.max(6, (week.count / peak) * 100)}%`;
@@ -198,8 +214,8 @@ export function createAvalanchePanel({
       root.hidden = false;
       mode.textContent =
         view.mode === 'replay' && view.seasonNumber
-          ? `Replay ${seasonLabel(view.seasonNumber)}`
-          : 'Live';
+          ? t('Replay {season}', { season: seasonLabel(view.seasonNumber) })
+          : t('Live');
       mode.classList.toggle('is-replay', view.mode === 'replay');
 
       if (view.days.length) {
@@ -217,16 +233,21 @@ export function createAvalanchePanel({
           day.classList.add('is-changing');
           shownDay = current.date;
         }
-        badge.textContent = current.forecast ? 'Forecast' : 'Observed';
+        badge.textContent = current.forecast ? t('Forecast') : t('Observed');
         badge.classList.toggle('is-forecast', current.forecast);
         count.textContent = view.loading
-          ? 'Loading…'
+          ? t('Loading…')
           : view.error
-            ? view.error
-            : `${view.visibleCount} avalanche${view.visibleCount === 1 ? '' : 's'} so far`;
+            ? translateKnown(view.error)
+            : tn(
+                view.visibleCount,
+                '{count} avalanche so far',
+                '{count} avalanches so far',
+                { count: formatNumber(view.visibleCount) },
+              );
       }
 
-      const label = view.playing ? 'Pause' : 'Play';
+      const label = view.playing ? t('Pause') : t('Play');
       if (toggle.title !== label) {
         toggle.title = label;
         toggle.setAttribute('aria-label', label);
@@ -235,19 +256,22 @@ export function createAvalanchePanel({
 
       notice.hidden = !(view.quiet && view.mode === 'live');
       if (!notice.hidden) {
-        noticeText.textContent =
-          'Out of season — daily avalanche forecasts resume in winter, and few avalanches are reported now.';
+        noticeText.textContent = t(
+          'Out of season — daily avalanche forecasts resume in winter, and few avalanches are reported now.',
+        );
         replay.textContent = view.seasonNumber
-          ? `Replay ${seasonLabel(view.seasonNumber)}`
-          : 'Replay last season';
+          ? t('Replay {season}', { season: seasonLabel(view.seasonNumber) })
+          : t('Replay last season');
         replay.disabled = view.loading;
       }
 
       seasonBlock.hidden = view.mode !== 'replay';
       if (!seasonBlock.hidden) {
         seasonTitle.textContent = view.season
-          ? `Season ${seasonLabel(view.season.season)} · avalanches reported in Norway per week`
-          : 'Loading season…';
+          ? t('Season {season} · avalanches reported in Norway per week', {
+              season: seasonLabel(view.season.season),
+            })
+          : t('Loading season…');
         syncWeeks(view.season, view.weekFrom);
       }
     },
